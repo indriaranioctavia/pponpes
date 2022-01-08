@@ -1,0 +1,98 @@
+<template>
+    <div class="page no-toolbar no-navbar no-swipeback login-screen-page">
+        <div class="page-content login-screen-content">
+            <div class="login-screen-title">Aplikasi Kunjungan <br>Daftar Akun</div>
+            <form>
+                <div class="list">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Nama User</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="nama_user" id="daftar_nama_user"
+                                        placeholder="Masukan Nama User" autofocus>
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Password</div>
+                                <div class="item-input-wrap">
+                                    <input type="password" name="password" id="daftar_password"
+                                        placeholder="Masukan password">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="list block">
+                    <ul>
+                        <li style="margin-bottom: 5px;">
+                            <a href="#" class="col button button-fill color-blue"
+                                @click="click_simpan_akun">Daftar</a>
+                        </li>
+                    </ul>
+                    <div class="block-footer">
+                        Aplikasi Kunjungan-simpan datamu disini.<br> isi data dan lengkapi. <br>
+                        sudah punya akun? <a href="#" class="link back">ya</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+<script>
+    return {
+        methods: {
+            click_simpan_akun: function () {
+                var $ = this.$;
+                var app = this.$app;
+                var router = this.$router;
+                var n = $('#daftar_nama_user').val();
+                var p = $('#daftar_password').val();
+                console.log(n, p);
+                if (n=='') {
+                    app.dialog.alert("nama user masih kosong");
+                }else if (p=='') {
+                    app.dialog.alert("password masih kosong");
+                }else{
+                    app.request.post(api_daftar_user, {n:n, p:p}, function (data, status, xhr) {
+                        console.log(data);
+                        console.log(status);
+                        // console.log(xhr);
+                        if (data['status'] === 'Sukses') {
+                            app.dialog.alert(data['message'], 'Pemberitahuan', function () {
+                                $('#daftar_nama_user').val('');
+                                $('#daftar_password').val('');
+                                app.loginScreen.open('.login-screen');
+                                router.back();
+                            });
+                        }else{
+                            app.dialog.alert(data['message'], 'Pemberitahuan', function () {
+                                $('#daftar_nama_user').focus();
+                            });
+                        }
+                        
+                    }, function (xhr, status, message) {
+                        // console.log(xhr);
+                        console.log(status);
+                        console.log(message);
+                        // panggil fungsi untuk menampilkan error
+                        info_error(status);
+                    }, "json");
+                }
+            }
+        },
+        on: {
+            pageInit: function (page) {
+                console.log('pageInit');
+            },
+            pageBeforeRemove: function () {
+                console.log('pageBeforeRemove');
+                app.loginScreen.open('.login-screen');
+            }
+        }
+    }
+</script>
