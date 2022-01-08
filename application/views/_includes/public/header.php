@@ -75,8 +75,8 @@
                                     <a href="<?= base_url('dashboard'); ?>" class="dropdown-item">Dashboard</a>
                                     <div class="dropdown-divider"></div>
                                 <?php endif; ?>
-                                <a href="<?= base_url('configuration/account') ?>" class="dropdown-item">My Account</a>
-                                <a href="<?= base_url('signout'); ?>" class="dropdown-item">Sign Out</a>
+                                <a href="<?= base_url('configuration/account') ?>" class="dropdown-item">Akun saya</a>
+                                <a href="<?= base_url('signout'); ?>" class="dropdown-item">Log out</a>
                             </div>
                         </div>
                     <?php else : ?>
@@ -92,7 +92,7 @@
                                         </svg>
                                     </span>
                                     <span class="nav-link-title">
-                                        Sign In
+                                        Log In
                                     </span>
                                 </a>
                             </li>
